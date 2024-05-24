@@ -6,6 +6,14 @@ This is a boilerplate project for creating React applications using Vite as the 
 
 Make sure you have Node.js and npm
 
+## Installation
+
+ Install dependencies:
+
+   ```sh
+   npm install
+   ```
+
 ### Run the development server
 
 npm run dev
