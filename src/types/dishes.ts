@@ -9,3 +9,8 @@ export interface Dish {
   state: string;
   region: string;
 }
+
+export interface geoData{
+  centroid: number[],
+  distance: number
+}

@@ -1,20 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getDishByName } from '../services/dishService';
-import { Dish } from '../types/dishes';
+import { Dish,geoData } from '../types/dishes';
+import { useLocation } from 'react-router-dom';
 
 const DishDetails: React.FC = () => {
     const { name } = useParams<{ name: string }>();
     const [dish, setDish] = useState<Dish | null>(null);
+    const [geoData, setGeoData] = useState<geoData | null>(null)
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const getLocation = new Promise<{ latitude: number; longitude: number }>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const { latitude, longitude } = position.coords;
+                resolve({ latitude, longitude });
+            },
+            error => {
+                reject(error);
+            }
+        );
+    });
 
     useEffect(() => {
         if (name !== undefined) {
-            getDishByName(name).then(response => {
-                setDish(response.data);
-            });
+          getLocation.then(locate => {
+            const currentLocation: number[] =[locate.latitude, locate.longitude]   
+            const requestData: geoData= {location: currentLocation, stateName: location.state|| 'tamil nadu'}   
+              getDishByName(name,requestData).then(response => {
+                  setDish(response.data.dish);
+                  setGeoData(response.data.statesData);
+                });
+            })
         }
     }, [name]);
+
+
+    
 
     return (
         <div className="container mx-auto p-4">
@@ -30,6 +53,10 @@ const DishDetails: React.FC = () => {
                         <p className="text-lg"><span className="font-semibold">Course:</span> {dish.course}</p>
                         <p className="text-lg"><span className="font-semibold">State:</span> {dish.state}</p>
                         <p className="text-lg"><span className="font-semibold">Region:</span> {dish.region}</p>
+                        <p className="text-lg"><span className="font-semibold">Centroid:</span> {`${geoData.centroid[0]},  ${geoData.centroid[1]}`}</p>
+                        <p className="text-lg"><span className="font-semibold">Distance:</span> {geoData.distance}</p>
+
+
                     </div>
                     <button
                         onClick={() => navigate(-1)}

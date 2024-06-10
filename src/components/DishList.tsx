@@ -13,8 +13,8 @@ const DishList: React.FC = () => {
         });
     }, []);
 
-    const handleRowClick = (dishName: string) => {
-        navigate(`/dish/${dishName}`);
+    const handleRowClick = (dishName: string, dishState: string) => {
+        navigate(`/dish/${dishName}`, {state: dishState});
     };
 
     return (
@@ -37,7 +37,7 @@ const DishList: React.FC = () => {
                 <tbody>
                     {dishes.map((dish, index) => (
                         <tr key={index} className="even:bg-gray-100 odd:bg-white">
-                            <td className="py-2 px-4 border-b text-sky-500 underline decoration-1 cursor-pointer" onClick={() => handleRowClick(dish.name)}>{dish.name}</td>
+                            <td className="py-2 px-4 border-b text-sky-500 underline decoration-1 cursor-pointer" onClick={() => handleRowClick(dish.name, dish.state)}>{dish.name}</td>
                             <td className="py-2 px-4 border-b">{dish.ingredients}</td>
                             <td className="py-2 px-4 border-b">{dish.diet}</td>
                             <td className="py-2 px-4 border-b">{dish.prep_time}</td>

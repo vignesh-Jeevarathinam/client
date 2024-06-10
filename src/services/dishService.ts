@@ -1,15 +1,17 @@
 import axios from "axios";
+import { geoData } from "../types/dishes";
 
 //here we can call an api's
 
-const API_URL = "http://localhost:5500/api";
+const API_URL = "http://localhost:5600/api";
 
 export const getAllDishes = () => {
   return axios.get(`${API_URL}/dishes`);
 };
 
-export const getDishByName = (name: string) => {
-  return axios.get(`${API_URL}/dishes/${name}`);
+export const getDishByName = (name: string, geoData: geoData) => {
+  console.log(geoData)
+  return axios.post(`${API_URL}/dishes/${name}`,{geoData });
 };
 
 export const getDishesByIngredients = (ingredients: string[]) => {
