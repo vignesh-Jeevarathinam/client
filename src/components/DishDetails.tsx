@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getDishByName } from '../services/dishService';
-import { Dish,geoData } from '../types/dishes';
+import { Dish, geoData } from '../types/dishes';
 import { useLocation } from 'react-router-dom';
 
 const DishDetails: React.FC = () => {
@@ -25,19 +25,19 @@ const DishDetails: React.FC = () => {
 
     useEffect(() => {
         if (name !== undefined) {
-          getLocation.then(locate => {
-            const currentLocation: number[] =[locate.latitude, locate.longitude]   
-            const requestData: geoData= {location: currentLocation, stateName: location.state|| 'tamil nadu'}   
-              getDishByName(name,requestData).then(response => {
-                  setDish(response.data.dish);
-                  setGeoData(response.data.statesData);
+            getLocation.then(locate => {
+                const currentLocation: number[] = [locate.latitude, locate.longitude]
+                const requestData: geoData = { location: currentLocation, stateName: location.state || 'tamil nadu' }
+                getDishByName(name, requestData).then(response => {
+                    setDish(response.data.dish);
+                    setGeoData(response.data.statesData);
                 });
             })
         }
     }, [name]);
 
 
-    
+
 
     return (
         <div className="container mx-auto p-4">
@@ -54,7 +54,7 @@ const DishDetails: React.FC = () => {
                         <p className="text-lg"><span className="font-semibold">State:</span> {dish.state}</p>
                         <p className="text-lg"><span className="font-semibold">Region:</span> {dish.region}</p>
                         <p className="text-lg"><span className="font-semibold">Centroid:</span> {`${geoData.centroid[0]},  ${geoData.centroid[1]}`}</p>
-                        <p className="text-lg"><span className="font-semibold">Distance:</span> {geoData.distance}</p>
+                        <p className="text-lg"><span className="font-semibold">Distance:</span> {`${geoData.distance} KM`}</p>
 
 
                     </div>

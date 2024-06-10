@@ -14,7 +14,7 @@ const DishList: React.FC = () => {
     }, []);
 
     const handleRowClick = (dishName: string, dishState: string) => {
-        navigate(`/dish/${dishName}`, {state: dishState});
+        navigate(`/dish/${dishName}`, { state: dishState == -1 ? "Tamil Nadu" : dishState });
     };
 
     return (
